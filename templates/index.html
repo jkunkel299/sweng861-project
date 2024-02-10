@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}Music Search Tool{% endblock %}
+
+{% block content %}
+<h1 class="text-center">Music Search Tool</h1>
+
+<div class="container container-fluid">
+  <div class="row align-items-center">
+    <div class="col-sm-6">
+      <div class="card mx-3 my-3">
+        <div class="card-body">
+          <h5 class="card-title">Search for an Artist</h5>
+          <p class="card-text">Search for an artist to get up to 5 of their most recent albums and up to 5 of their most popular songs.</p>
+          <a href="/artistSearch">
+            <button type="button" class="btn btn-primary btn-lg">Search for an Artist</button>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="card mx-3 my-3">
+        <div class="card-body">
+          <h5 class="card-title">Search for a Song</h5>
+          <p class="card-text">Search for a song using its title or a related phrase to get the top 10 matches for that song.</p>
+          <a href="/songSearch">
+            <button type="button" class="btn btn-primary btn-lg">Search for a Song</button>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}

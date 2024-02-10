@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+{% block title %}Artist Search{% endblock %}
+
+{% block content %}
+<h1 class="text-center">Artist Search Tool</h1>
+
+<div class="card mx-3 my-3 px-2 py-2">
+    <div class="card-title">
+        <h2>Search for an artist</h2>
+    </div>
+    <div class="card-body">
+        <form action="/artistSearch" method="POST">
+            <input type="text" class="form-control" id="artistToSearch" name="artistToSearch" placeholder="Enter the name of an artist">
+            </br>
+            <button class="btn btn-secondary" type="submit">Search Artist</button>
+        </form>
+    </div>
+</div>
+
+{% if recent_albums == "": %}
+<div class="card mx-3 my-3 px-2 py-2 alert alert-danger" role="alert">
+    <h3>Invalid input, please try again!</h3>
+</div>
+{% elif recent_albums: %}
+<div class="card mx-3 my-3 px-2 py-2">
+    <h2 class="card-title">Artist Found: </h2>
+    <h3 class="card-body">{{ artist_name }}</h3>
+</div>
+
+<div class="card mx-3 my-3 px-2 py-2">
+    <h2 class="card-title">{{ artist_name }}'s Most Recent Albums</h2>
+    <div class="card-body" id="albums_output">
+        <table class="table album-table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Album Name</th>
+                    <th>Release Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for album in recent_albums %}
+                <tr>
+                    <td class="align-middle"><img src="{{ album.cover }}"  class="rounded mx-auto d-block"></td>
+                    <td class="align-middle">{{ album.name }}</td>
+                    <td class="align-middle">{{ album.date }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endif %}
+
+{% if songs == "": %}
+<div>
+    </br>
+</div>
+{% elif songs: %}
+<div class="card mx-3 my-3 px-2 py-2">
+    <h2 class="card-title">{{ artist_name }}'s Top Songs on Spotify</h2>
+    <div class="card-body" id="songs_output">
+        <table class="table song-table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Song Name</th>
+                    <th>Preview</th>
+                    <th>Album</th>
+                    <th>Release Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for song in songs %}
+                
+                <tr class="align-middle">
+                    <td><img src="{{ song.cover }}"  class="rounded mx-auto d-block"></td>
+                    <td>{{ song.name }}</td>
+                    <td>
+                        {% if song.preview == None %}
+                            <p>Sorry! Preview is not available for this song.</p>
+                        {% else %}                        
+                            <button type="button" class="btn btn-outline-primary" onClick="playPause(event)">
+                                <audio id="{{ song.name }}" src="{{ song.preview }}">
+                                    Your browser does not support audio playback.
+                                </audio>   
+                                Preview {{ song.name }}
+                            </button>
+                        {% endif %}
+                    </td>
+                    <td>{{ song.album }}</td>
+                    <td>{{ song.date }}</td>
+                </tr>
+                
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    var isPlaying = false;
+    var lastAud;
+
+    function playPause(e) {
+        console.log(isPlaying);
+        console.log(lastAud);
+        var aud = e.target.querySelector("audio")
+        if (isPlaying && lastAud!=null) {
+            lastAud.pause();
+            isPlaying = false;
+            console.log(isPlaying);
+            console.log(lastAud.tagName)
+        } else {
+            lastAud = aud;
+            aud.volume = 0.5;
+            aud.play();
+            isPlaying = true;
+        }
+    }
+</script>
+{% endif %}
+
+{% endblock %}
