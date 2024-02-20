@@ -1,7 +1,14 @@
 # import Flask
 from flask import Flask, request, render_template
+
 # import functions from MusicSearch module
-from MusicSearch.music_search import find_artist_id, recent_albums_return, top_songs, get_tracks_from_search
+from MusicSearch.music_search import (
+    find_artist_id,
+    recent_albums_return,
+    top_songs,
+    get_tracks_from_search,
+)
+
 # import getAuthToken function from ConfigFile module
 from ConfigFile.config import getAuthToken
 
@@ -11,25 +18,27 @@ app = Flask(__name__)
 # get access_token for use in functions imported from MusicSearch module
 access_token = getAuthToken()
 
-@app.route('/')
-def index():
-    ''' 
-    This code renders the home page, index.html 
-    '''
-    return render_template('index.html')
 
-@app.route('/artistSearch', methods = ["GET", "POST"])
+@app.route("/")
+def index():
+    """
+    This code renders the home page, index.html
+    """
+    return render_template("index.html")
+
+
+@app.route("/artistSearch", methods=["GET", "POST"])
 def artist_page():
-    ''' 
-    This code receives the user input text from the HTML interface and 
-    returns the artist's most recent albums and top tracks using 
+    """
+    This code receives the user input text from the HTML interface and
+    returns the artist's most recent albums and top tracks using
     recent_albums_return() and top_songs() python functions.
-    '''
-    # if request.method is POST 
+    """
+    # if request.method is POST
     # (i.e., when the user submits the form within the artist_search webpage)
     if request.method == "POST":
         # get user input from form in artist_search.html, input id="artistToSearch"
-        artist = request.form.get('artistToSearch')
+        artist = request.form.get("artistToSearch")
         if artist == "":
             # if the form is blank, set the page context as empty strings
             top_artist_hit = ""
@@ -38,7 +47,7 @@ def artist_page():
         else:
             # convert user input to string
             artist_search = str(artist)
-            # call find_artist_id function, where artist_search is the 
+            # call find_artist_id function, where artist_search is the
             # user's input from the artistToSearch form
             search_result = find_artist_id(access_token, artist_search)
             # extract the most-likely value for the artist's name from the search results tuple
@@ -52,21 +61,27 @@ def artist_page():
         # artist_name is the most-likely name of the artist, top_artist_hit, or empty string if invalid user input
         # recent_albums list is the list returned from recent_albums_return(), albums_result, or empty string if invalid user input
         # songs list is the list returned from top_songs, tracks_result, or empty string if invalid user input
-        return render_template('artist_search.html', artist_name=top_artist_hit, recent_albums=albums_result, songs=tracks_result)
+        return render_template(
+            "artist_search.html",
+            artist_name=top_artist_hit,
+            recent_albums=albums_result,
+            songs=tracks_result,
+        )
     # if request.method is GET, render artist_search HTML page without additional context
-    return render_template('artist_search.html')
+    return render_template("artist_search.html")
 
-@app.route('/songSearch', methods = ["GET", "POST"])
+
+@app.route("/songSearch", methods=["GET", "POST"])
 def song_page():
-    ''' 
-    This code receives the user input text from the HTML interface and 
-    returns the top 10 bst-matching tracks, their artists, and their albums, using 
+    """
+    This code receives the user input text from the HTML interface and
+    returns the top 10 bst-matching tracks, their artists, and their albums, using
     get_tracks_from_search() python function.
-    '''
-    # if request.method is POST 
+    """
+    # if request.method is POST
     # (i.e., when the user submits the form within the song_search webpage)
     if request.method == "POST":
-        term = request.form.get('songToSearch')
+        term = request.form.get("songToSearch")
         if term == "":
             # if the form is blank, set the page context to an empty string
             matches_result = ""
@@ -77,9 +92,10 @@ def song_page():
             matches_result = get_tracks_from_search(access_token, search_term)
         # render the song_search template with the context resulting from the function call above, or blank context
         # songs list is the list returned from get_tracks_from_search, matches_result, or empty string if invalid user input
-        return render_template('song_search.html', songs=matches_result)
+        return render_template("song_search.html", songs=matches_result)
     # if request.method is GET, render song_search HTML page without additional context
-    return render_template('song_search.html')
+    return render_template("song_search.html")
+
 
 # run Flask application
 if __name__ == "__main__":
