@@ -1,6 +1,6 @@
 import unittest
 
-from MusicSearch.music_search import *
+from MusicSearch.music_search import find_artist_id, recent_albums_return, top_songs, get_tracks_from_search
 from ConfigFile.config import getAuthToken
 
 # get access_token for use in functions imported from MusicSearch module

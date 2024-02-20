@@ -1,7 +1,7 @@
 # import Flask
 from flask import Flask, request, render_template
 # import functions from MusicSearch module
-from MusicSearch.music_search import *
+from MusicSearch.music_search import find_artist_id, recent_albums_return, top_songs, get_tracks_from_search
 # import getAuthToken function from ConfigFile module
 from ConfigFile.config import getAuthToken
 

@@ -10,6 +10,7 @@
         <h2>Search for a song</h2>
     </div>
     <div class="card-body">
+        <!-- Form using POST method in /songSearch router, in which the user enters the name of the song, or the term, to search -->
         <form action="/songSearch" method="POST">
             <input type="text" class="form-control" id="songToSearch" name="songToSearch" placeholder="Enter the name of a song, or a term to search">
             </br>
@@ -18,10 +19,12 @@
     </div>
 </div>
 
+<!-- If the songs object (context given from server.py) is an empty string, inform the user that the input was invalid and instruct them to try again -->
 {% if songs == "": %}
 <div class="card mx-3 my-3 px-2 py-2 alert alert-danger" role="alert">
     <h3>Invalid input, please try again!</h3>
 </div>
+<!-- if the songs object exists -->
 {% elif songs: %}
 <div class="card mx-3 my-3 px-2 py-2">
     <h2 class="card-title">Top Song Matches</h2>
@@ -38,14 +41,18 @@
                 </tr>
             </thead>
             <tbody>
+
                 {% for song in songs %}
                 <tr class="align-middle">
-                    <td><img src="{{ song.cover }}"  class="rounded mx-auto d-block"></td>
+                    <!-- To generate table body, iterate through songs list, in which each item is a dictionary defining a song in the top songs list -->
+                    <td><img src="{{ song.cover }}"  class="rounded mx-auto d-block"></td> <!-- album art for song -->
                     <td>{{ song.name }}</td>
                     <td>
+                        <!-- if the Spotify API returned null for the preview_url, the user cannot preview the song audio. Inform the user. -->
                         {% if song.preview == None %}
                             <p>Sorry! Preview is not available for this song.</p>
                         {% else %}
+                        <!-- else, provide the user with a "play/pause" button to be able to preview the song. On click, calls the playPause JavaScript function -->  
                             <button type="button" class="btn btn-outline-primary" onClick="playPause(event)">
                                 <audio id="{{ song.name }}" src="{{ song.preview }}">
                                     Your browser does not support audio playback.
@@ -65,22 +72,27 @@
 </div>
 
 <script>
+    // initialize variables to define whether audio is playing, and what the last audio played was
     var isPlaying = false;
     var lastAud;
 
     function playPause(e) {
-        console.log(isPlaying);
-        console.log(lastAud);
+        // on event (onClick), use the event target with a query for the "audio" HTML tag associated with the click event (set this to aud)
         var aud = e.target.querySelector("audio")
         if (isPlaying && lastAud!=null) {
+            // if isPlaying is set to TRUE, and lastAud exists (is not null), pause the last audio that was playing, set isPlaying to FALSE
             lastAud.pause();
             isPlaying = false;
             console.log(isPlaying);
             console.log(lastAud.tagName)
         } else {
+            // else, set lastAud to the curent audio tag value
             lastAud = aud;
+            // set the audio volume to 0.5 (avoid blown eardrums)
             aud.volume = 0.5;
+            // play the audio source file associated with the audio HTML tag being acted upon
             aud.play();
+            // set isPlaying to TRUE
             isPlaying = true;
         }
     }
