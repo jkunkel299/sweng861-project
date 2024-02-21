@@ -104,14 +104,18 @@ def recent_albums_return(access_token, artist_id):
             # initialize blank list of recent_albums
             recent_albums = []
             for i in range(len(get_recent_albums_res_data)):
-                # for each album in the 'items' array, extract album cover, album name, and release date
-                album = {
-                    "cover": get_recent_albums_res_data[i]["images"][2]["url"],
-                    "name": get_recent_albums_res_data[i]["name"],
-                    "date": get_recent_albums_res_data[i]["release_date"],
-                }
-                # append the album to the end of the recent_albums list
-                recent_albums.append(album)
+                try:
+                    # for each album in the 'items' array, extract album cover, album name, and release date
+                    album = {
+                        "cover": get_recent_albums_res_data[i]["images"][2]["url"],
+                        "name": get_recent_albums_res_data[i]["name"],
+                        "date": get_recent_albums_res_data[i]["release_date"],
+                    }
+                    # append the album to the end of the recent_albums list
+                    recent_albums.append(album)
+                except IndexError:
+                    # catch for IndexError
+                    recent_albums = ""
         elif get_recent_albums_res.status_code == 500:
             # if the response status was 500 (Server error)
             # set recent_albums to blank string for future error handling
@@ -162,18 +166,22 @@ def top_songs(access_token, artist_id):
             # initialize blank list of songs
             songs = []
             for i in range(5):
-                # for the first 5 elements in the 'tracks' array, extract song id, album cover,
-                # song name, song preview URL, album name, and release date
-                song = {
-                    "id": get_top_songs_res_data[i]["id"],
-                    "cover": get_top_songs_res_data[i]["album"]["images"][2]["url"],
-                    "name": get_top_songs_res_data[i]["name"],
-                    "preview": get_top_songs_res_data[i]["preview_url"],
-                    "album": get_top_songs_res_data[i]["album"]["name"],
-                    "date": get_top_songs_res_data[i]["album"]["release_date"],
-                }
-                # append the song to the end of the songs list
-                songs.append(song)
+                try:
+                    # for the first 5 elements in the 'tracks' array, extract song id, album cover,
+                    # song name, song preview URL, album name, and release date
+                    song = {
+                        "id": get_top_songs_res_data[i]["id"],
+                        "cover": get_top_songs_res_data[i]["album"]["images"][2]["url"],
+                        "name": get_top_songs_res_data[i]["name"],
+                        "preview": get_top_songs_res_data[i]["preview_url"],
+                        "album": get_top_songs_res_data[i]["album"]["name"],
+                        "date": get_top_songs_res_data[i]["album"]["release_date"],
+                    }
+                    # append the song to the end of the songs list
+                    songs.append(song)
+                except IndexError:
+                    # catch for IndexError
+                    songs = ""
         elif get_top_songs_res.status_code == 500:
             # if the response status was 500 (Server error)
             # set songs to blank string for future error handling
@@ -231,20 +239,24 @@ def get_tracks_from_search(access_token, search_term):
                 # initialize blank list of songs
                 songs = []
                 for i in range(10):
-                    # for the first 10 elements in the 'tracks' array, extract album cover,
-                    # song name, song preview URL, artist name, album name, and release date
-                    song = {
-                        "cover": get_songs_res_data["items"][i]["album"]["images"][2][
-                            "url"
-                        ],
-                        "name": get_songs_res_data["items"][i]["name"],
-                        "preview": get_songs_res_data["items"][i]["preview_url"],
-                        "artist": get_songs_res_data["items"][i]["artists"][0]["name"],
-                        "album": get_songs_res_data["items"][i]["album"]["name"],
-                        "date": get_songs_res_data["items"][i]["album"]["release_date"],
-                    }
-                    # append the song to the end of the songs list
-                    songs.append(song)
+                    try:
+                        # for the first 10 elements in the 'tracks' array, extract album cover,
+                        # song name, song preview URL, artist name, album name, and release date
+                        song = {
+                            "cover": get_songs_res_data["items"][i]["album"]["images"][2][
+                                "url"
+                            ],
+                            "name": get_songs_res_data["items"][i]["name"],
+                            "preview": get_songs_res_data["items"][i]["preview_url"],
+                            "artist": get_songs_res_data["items"][i]["artists"][0]["name"],
+                            "album": get_songs_res_data["items"][i]["album"]["name"],
+                            "date": get_songs_res_data["items"][i]["album"]["release_date"],
+                        }
+                        # append the song to the end of the songs list
+                        songs.append(song)
+                    except IndexError:
+                        # catch for IndexError
+                        songs = ""
         elif get_songs_res.status_code == 500:
             # if the response status was 500 (Server error)
             # set songs to blank string for future error handling
