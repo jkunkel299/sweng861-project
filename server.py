@@ -98,6 +98,10 @@ def song_page():
 
 @app.errorhandler(500)
 def internal_server_error(e):
+    """
+    This code handles routing for internal server errors, allowing the user
+    to return to the homepage.
+    """
     # note that we set the 500 status explicitly
     return render_template('500.html'), 500
 
