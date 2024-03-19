@@ -1,7 +1,8 @@
 # SWENG861 Project: Music Search Tool
 ### Jessica Kunkel
-####Software Construction course project in Flask
-####Link to YouTube presentation: https://youtu.be/iznYkVZqCsg 
+Software Construction course project in Flask
+
+Link to YouTube presentation: https://youtu.be/iznYkVZqCsg 
 ---
 This Music Search Tool is a web application written in Python using Flask. The application utilizes the Spotify Web API to search for artists, songs, albums, and other data.
 The web application supports two use cases: 
