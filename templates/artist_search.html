@@ -19,7 +19,7 @@
     </div>
 </div>
 
-<!-- If the recent_albums object (context given from server.py) is an empty string, inform the user that the input was invalid and instruct them to try again -->
+<!-- If the recent_albums object (context given from application.py) is an empty string, inform the user that the input was invalid and instruct them to try again -->
 {% if recent_albums == "": %}
 <div class="card mx-3 my-3 px-2 py-2 alert alert-danger" role="alert">
     <h3>Invalid input, please try again!</h3>
@@ -58,7 +58,7 @@
 </div>
 {% endif %}
 
-<!-- if the songs object (context from server.py) is an empty string, do not display anything in this section. The user is informed of the error above. -->
+<!-- if the songs object (context from application.py) is an empty string, do not display anything in this section. The user is informed of the error above. -->
 {% if songs == "": %}
 <div>
     </br>
