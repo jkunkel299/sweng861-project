@@ -82,14 +82,18 @@ def song_page():
     # (i.e., when the user submits the form within the song_search webpage)
     if request.method == "POST":
         term = request.form.get("songToSearch")
+        print(f'term: {term}')
         if term == "":
             # if the form is blank, set the page context to an empty string
             matches_result = ""
+            print("in if term = \"\"")
         else:
             # convert user input to string
             search_term = str(term)
+            print(f'search_term: {search_term}')
             # call top_songs function, where the search_term is the user's input
             matches_result = get_tracks_from_search(access_token, search_term)
+            print(matches_result)
         # render the song_search template with the context resulting from the function call above, or blank context
         # songs list is the list returned from get_tracks_from_search, matches_result, or empty string if invalid user input
         return render_template("song_search.html", songs=matches_result)

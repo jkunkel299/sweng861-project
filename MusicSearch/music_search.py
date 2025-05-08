@@ -181,7 +181,10 @@ def top_songs(access_token, artist_id):
                     songs.append(song)
                 except IndexError:
                     # catch for IndexError
-                    songs = ""
+                    if i == 0:
+                            songs = ""
+                    else: 
+                        break
         elif get_top_songs_res.status_code == 500:
             # if the response status was 500 (Server error)
             # set songs to blank string for future error handling
@@ -219,6 +222,7 @@ def get_tracks_from_search(access_token, search_term):
             + search_term
             + "&type=track&market=US&limit=10"
         )
+        print(f'url={get_songs_url}')
         # Set headers, using access_token
         headers = {
             "Authorization": f"Bearer {access_token}",
@@ -235,11 +239,13 @@ def get_tracks_from_search(access_token, search_term):
                 # if the response status was good, but Spotify Web API returned no results
                 # set songs to empty string for future error handling
                 songs = ""
+                print("in if not get_songs_res_data")
             else:
                 # initialize blank list of songs
                 songs = []
                 for i in range(10):
                     try:
+                        print("in try")
                         # for the first 10 elements in the 'tracks' array, extract album cover,
                         # song name, song preview URL, artist name, album name, and release date
                         song = {
@@ -255,8 +261,12 @@ def get_tracks_from_search(access_token, search_term):
                         # append the song to the end of the songs list
                         songs.append(song)
                     except IndexError:
+                        print("in IndexError")
                         # catch for IndexError
-                        songs = ""
+                        if i == 0:
+                            songs = ""
+                        else: 
+                            break
         elif get_songs_res.status_code == 500:
             # if the response status was 500 (Server error)
             # set songs to blank string for future error handling
