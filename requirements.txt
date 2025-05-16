@@ -12,3 +12,4 @@ requests==2.31.0
 urllib3==2.2.1
 Werkzeug==3.0.1
 gunicorn==23.0.0
+python-dotenv==1.1.0
