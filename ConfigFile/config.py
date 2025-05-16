@@ -1,11 +1,13 @@
 import base64
 import requests
-
+import os
+from dotenv import load_dotenv
 
 def getAuthToken():
-    # Client information
-    CLIENT_ID = "51548009223c4ba0b2f5b33c5aaf1d96"
-    CLIENT_SECRET = "41791e650d3741009cba40f4062dc8d6"
+    load_dotenv()
+
+    CLIENT_ID = os.getenv("CLIENT_ID")
+    CLIENT_SECRET = os.getenv("CLIENT_SECRET")
 
     # base64 encodinng to communicate CLIENT_ID and CLIENT_SECRET to Spotify API for authorization
     AUTH_STRING_BYTES = (CLIENT_ID + ":" + CLIENT_SECRET).encode("ascii")
